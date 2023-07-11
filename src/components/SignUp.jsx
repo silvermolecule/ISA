@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { UserAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import {validPassword } from './Regex.jsx';
 const SignUp = () => {
   const [email,setEmail]= useState("");
   const [password,setPassword] = useState("");
@@ -11,13 +12,20 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        try {
-          await createUser(email, password);
-          navigate("/account");
-        } catch (e) {
-          setError(e.message);
-          console.log(e.message);
-        }
+
+        if (validPassword.test(password)) {
+          try {
+            await createUser(email, password);
+            navigate("/account");
+          } catch (e) {
+            setError(e.message);
+            console.log(e.message);
+          }
+       }else{
+        setError("awhdboywbEnter Valid password")
+       }
+      
+
       };
   return (
     <div>
