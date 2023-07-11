@@ -3,12 +3,25 @@ import { UserAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import {validPassword } from './Regex.jsx';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 const SignUp = () => {
   const [email,setEmail]= useState("");
   const [password,setPassword] = useState("");
     const {createUser,user} = UserAuth()
     const navigate = useNavigate();
     const [error, setError] = useState("");
+
+  const createUsers = ()=>{
+    addDoc(collection(db, "users"), {
+      email:email,
+      password:random(14)
+    });
+  }
+  
+  const random = (length) => {
+    return Math.random().toString(16).substr(2, length);
+}
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
@@ -16,6 +29,7 @@ const SignUp = () => {
         if (validPassword.test(password)) {
           try {
             await createUser(email, password);
+            createUsers();
             navigate("/account");
           } catch (e) {
             setError(e.message);

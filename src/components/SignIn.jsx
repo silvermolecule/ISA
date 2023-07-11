@@ -29,7 +29,7 @@ const SignIn = () => {
             <br />
             <Link to={"/"}>SignUp</Link>
         </form>
-        <p>{error.Remove(0,5)}</p>
+        <p>{error.slice(9)}</p>
     </div>
   )
 }
